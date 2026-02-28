@@ -1,0 +1,11 @@
+{
+  "vatten": {
+    "densitet": 1
+  },
+  "strösocker": {
+    "densitet": 0.85
+  },
+  "mjöl": {
+    "densitet": 0.59
+  }
+}

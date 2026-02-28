@@ -1,0 +1,83 @@
+:root {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.4;
+  color: #1f2937;
+  background-color: #f5f7fb;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: linear-gradient(180deg, #f5f7fb 0%, #ebf0fb 100%);
+}
+
+#app {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.container {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+}
+
+h1 {
+  margin-top: 0;
+  margin-bottom: 0.25rem;
+  font-size: 1.8rem;
+}
+
+.intro {
+  margin-top: 0;
+  color: #4b5563;
+}
+
+.converter-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.converter-table th,
+.converter-table td {
+  border: 1px solid #dbe4f2;
+  padding: 0.75rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.converter-table thead th {
+  background: #f1f5f9;
+}
+
+input,
+select {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 0.5rem 0.6rem;
+  font: inherit;
+  background: #fff;
+}
+
+.error {
+  color: #b91c1c;
+}
+
+@media (max-width: 700px) {
+  .converter-table {
+    font-size: 0.95rem;
+  }
+
+  .converter-table th,
+  .converter-table td {
+    padding: 0.55rem;
+  }
+}
