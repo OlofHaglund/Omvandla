@@ -1,11 +1,19 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 
+/**
+ * Ingredient conversion table.
+ * Loads ingredients from `ingredienser.json` and supports per-row conversions.
+ */
 type Ingredient = {
   densitet: number
 }
 
 type IngredientsMap = Record<string, Ingredient>
+/**
+ * Supported measurement units.
+ * @values g, ml, dl, tsk, msk
+ */
 type Unit = 'g' | 'ml' | 'dl' | 'tsk' | 'msk'
 
 type RowState = {
@@ -27,6 +35,9 @@ const rowEntries = computed(() =>
     .filter((entry): entry is { name: string; row: RowState } => entry.row !== undefined),
 )
 
+/**
+ * Convert any supported unit to milliliters.
+ */
 function toMilliliters(value: number, unit: Unit, densitet: number): number {
   if (unit === 'ml') return value
   if (unit === 'dl') return value * 100
@@ -35,6 +46,9 @@ function toMilliliters(value: number, unit: Unit, densitet: number): number {
   return value / densitet
 }
 
+/**
+ * Convert milliliters to a target unit.
+ */
 function fromMilliliters(valueMl: number, unit: Unit, densitet: number): number {
   if (unit === 'ml') return valueMl
   if (unit === 'dl') return valueMl / 100
@@ -43,6 +57,9 @@ function fromMilliliters(valueMl: number, unit: Unit, densitet: number): number 
   return valueMl * densitet
 }
 
+/**
+ * Calculate converted value for one ingredient row.
+ */
 function convert(name: string): number | null {
   const ingredient = ingredients.value[name]
   const row = rows.value[name]
@@ -54,6 +71,9 @@ function convert(name: string): number | null {
   return fromMilliliters(inMl, row.toUnit, ingredient.densitet)
 }
 
+/**
+ * Format one row result for display.
+ */
 function formattedResult(name: string): string {
   const value = convert(name)
   if (value === null) return '-'
@@ -63,6 +83,9 @@ function formattedResult(name: string): string {
   }).format(value)
 }
 
+/**
+ * Load ingredient data and initialize table row defaults.
+ */
 onMounted(async () => {
   try {
     const response = await fetch('/ingredienser.json')
