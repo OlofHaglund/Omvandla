@@ -6,7 +6,7 @@ type Ingredient = {
 }
 
 type IngredientsMap = Record<string, Ingredient>
-type Unit = 'g' | 'ml' | 'dl'
+type Unit = 'g' | 'ml' | 'dl' | 'tsk' | 'msk'
 
 type RowState = {
   amount: number
@@ -30,12 +30,16 @@ const rowEntries = computed(() =>
 function toMilliliters(value: number, unit: Unit, densitet: number): number {
   if (unit === 'ml') return value
   if (unit === 'dl') return value * 100
+  if (unit === 'tsk') return value * 5
+  if (unit === 'msk') return value * 15
   return value / densitet
 }
 
 function fromMilliliters(valueMl: number, unit: Unit, densitet: number): number {
   if (unit === 'ml') return valueMl
   if (unit === 'dl') return valueMl / 100
+  if (unit === 'tsk') return valueMl / 5
+  if (unit === 'msk') return valueMl / 15
   return valueMl * densitet
 }
 
@@ -112,6 +116,8 @@ onMounted(async () => {
               <option value="g">gram (g)</option>
               <option value="ml">milliliter (ml)</option>
               <option value="dl">deciliter (dl)</option>
+              <option value="tsk">tesked (tsk)</option>
+              <option value="msk">matsked (msk)</option>
             </select>
           </td>
           <td>
@@ -119,6 +125,8 @@ onMounted(async () => {
               <option value="g">gram (g)</option>
               <option value="ml">milliliter (ml)</option>
               <option value="dl">deciliter (dl)</option>
+              <option value="tsk">tesked (tsk)</option>
+              <option value="msk">matsked (msk)</option>
             </select>
           </td>
           <td><strong>{{ formattedResult(entry.name) }} {{ entry.row.toUnit }}</strong></td>
