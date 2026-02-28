@@ -20,6 +20,7 @@ Default to the Developer role for coding tasks.
 - Match existing coding conventions and file layout.
 - `README.md`: setup, run commands, dependencies, and required configuration.
 - `AGENTS.md`: how Codex should work in this project, cross-links to Rota, and workflow or maintenance rules.
+- Verify `README.md` and `AGENTS.md` remain accurate after changes.
 - For all changes, run `npm run dev` and test the implemented functionality before reporting completion.
 
 ## Data Format
