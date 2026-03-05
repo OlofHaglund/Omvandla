@@ -1,27 +1,19 @@
 # Omvandling
 
-**Current file:** `~/Documents/Omvandling/AGENTS.md`
-**Project Root Location:** `~/Documents/Omvandling`
-**Rota Project File:** `~/Documents/PKMS/00 - Rota/Projects/Omvandling/AGENTS.md`
-
 ## Project Summary
 
 Convert ingredient measurements between volume and weight units (for example `dl`/`ml` to `g`) using ingredient density data.
 
-## Roles to Use
+## Default Role
 
-Default to the Developer role for coding tasks.
-
-- **Developer role:** `~/Documents/PKMS/00 - Rota/Roles/Developer.md`
+Use the Developer role for coding tasks.
 
 ## Working Guidelines
 
 - Keep changes small and reversible.
 - Match existing coding conventions and file layout.
-- `README.md`: setup, run commands, dependencies, and required configuration.
-- `AGENTS.md`: how Codex should work in this project, cross-links to Rota, and workflow or maintenance rules.
-- Verify `README.md` and `AGENTS.md` remain accurate after changes.
-- For all changes, run `npm run dev` and test the implemented functionality before reporting completion.
+- Keep `README.md` and this file accurate after changes.
+- For all changes, run `npm run dev` and validate implemented behavior before completion.
 
 ## Data Format
 
@@ -37,14 +29,8 @@ Example:
   "socker": {
     "densitet": 1.59
   },
-  "mjöl": {
+  "mjol": {
     "densitet": 0.59
   }
 }
 ```
-
-## Expected Outputs
-
-- Clear implementation plan when changes are non-trivial.
-- Changes summarized with files touched and why.
-- Tests run or suggested.
