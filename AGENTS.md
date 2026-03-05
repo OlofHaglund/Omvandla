@@ -2,7 +2,7 @@
 
 **Current file:** `~/Documents/Omvandling/AGENTS.md`
 **Project Root Location:** `~/Documents/Omvandling`
-**Rota Project File:** `~/Documents/General/00 - Rota/Projects/Omvandling/AGENTS.md`
+**Rota Project File:** `~/Documents/PKMS/00 - Rota/Projects/Omvandling/AGENTS.md`
 
 ## Project Summary
 
@@ -12,7 +12,7 @@ Convert ingredient measurements between volume and weight units (for example `dl
 
 Default to the Developer role for coding tasks.
 
-- **Developer role:** `~/Documents/General/00 - Rota/Roles/Developer.md`
+- **Developer role:** `~/Documents/PKMS/00 - Rota/Roles/Developer.md`
 
 ## Working Guidelines
 
