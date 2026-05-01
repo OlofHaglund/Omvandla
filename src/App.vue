@@ -12,14 +12,23 @@ type Ingredient = {
 type IngredientsMap = Record<string, Ingredient>
 /**
  * Supported measurement units.
- * @values g, ml, dl, tsk, msk
+ * @values g, ml, dl, tsk, msk, cup
  */
-type Unit = 'g' | 'ml' | 'dl' | 'tsk' | 'msk'
+type Unit = 'g' | 'ml' | 'dl' | 'tsk' | 'msk' | 'cup'
 
 type RowState = {
   amount: number
   fromUnit: Unit
   toUnit: Unit
+}
+
+const unitLabel: Record<Unit, string> = {
+  g: 'g',
+  ml: 'ml',
+  dl: 'dl',
+  tsk: 'tsk',
+  msk: 'msk',
+  cup: 'US cup',
 }
 
 const ingredients = ref<IngredientsMap>({})
@@ -43,6 +52,7 @@ function toMilliliters(value: number, unit: Unit, densitet: number): number {
   if (unit === 'dl') return value * 100
   if (unit === 'tsk') return value * 5
   if (unit === 'msk') return value * 15
+  if (unit === 'cup') return value * 240
   return value / densitet
 }
 
@@ -54,6 +64,7 @@ function fromMilliliters(valueMl: number, unit: Unit, densitet: number): number 
   if (unit === 'dl') return valueMl / 100
   if (unit === 'tsk') return valueMl / 5
   if (unit === 'msk') return valueMl / 15
+  if (unit === 'cup') return valueMl / 240
   return valueMl * densitet
 }
 
@@ -141,6 +152,7 @@ onMounted(async () => {
               <option value="dl">deciliter (dl)</option>
               <option value="tsk">tesked (tsk)</option>
               <option value="msk">matsked (msk)</option>
+              <option value="cup">US cup</option>
             </select>
           </td>
           <td>
@@ -150,9 +162,10 @@ onMounted(async () => {
               <option value="dl">deciliter (dl)</option>
               <option value="tsk">tesked (tsk)</option>
               <option value="msk">matsked (msk)</option>
+              <option value="cup">US cup</option>
             </select>
           </td>
-          <td><strong>{{ formattedResult(entry.name) }} {{ entry.row.toUnit }}</strong></td>
+          <td><strong>{{ formattedResult(entry.name) }} {{ unitLabel[entry.row.toUnit] }}</strong></td>
         </tr>
       </tbody>
     </table>
