@@ -1,118 +1,17 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
-
-/**
- * Ingredient conversion table.
- * Loads ingredients from `ingredienser.json` and supports per-row conversions.
- */
-type Ingredient = {
-  densitet: number
-}
-
-type IngredientsMap = Record<string, Ingredient>
-/**
- * Supported measurement units.
- * @values g, ml, dl, tsk, msk, cup
- */
-type Unit = 'g' | 'ml' | 'dl' | 'tsk' | 'msk' | 'cup'
-
-type RowState = {
-  amount: number
-  fromUnit: Unit
-  toUnit: Unit
-}
-
-const unitLabel: Record<Unit, string> = {
-  g: 'g',
-  ml: 'ml',
-  dl: 'dl',
-  tsk: 'tsk',
-  msk: 'msk',
-  cup: 'US cup',
-}
+import { onMounted, ref } from 'vue'
+import type { IngredientsMap } from './types'
+import IngredientRow from './components/IngredientRow.vue'
 
 const ingredients = ref<IngredientsMap>({})
-const rows = ref<Record<string, RowState>>({})
-
 const loading = ref(true)
 const error = ref<string | null>(null)
 
-const ingredientNames = computed(() => Object.keys(ingredients.value))
-const rowEntries = computed(() =>
-  ingredientNames.value
-    .map((name) => ({ name, row: rows.value[name] }))
-    .filter((entry): entry is { name: string; row: RowState } => entry.row !== undefined),
-)
-
-/**
- * Convert any supported unit to milliliters.
- */
-function toMilliliters(value: number, unit: Unit, densitet: number): number {
-  if (unit === 'ml') return value
-  if (unit === 'dl') return value * 100
-  if (unit === 'tsk') return value * 5
-  if (unit === 'msk') return value * 15
-  if (unit === 'cup') return value * 240
-  return value / densitet
-}
-
-/**
- * Convert milliliters to a target unit.
- */
-function fromMilliliters(valueMl: number, unit: Unit, densitet: number): number {
-  if (unit === 'ml') return valueMl
-  if (unit === 'dl') return valueMl / 100
-  if (unit === 'tsk') return valueMl / 5
-  if (unit === 'msk') return valueMl / 15
-  if (unit === 'cup') return valueMl / 240
-  return valueMl * densitet
-}
-
-/**
- * Calculate converted value for one ingredient row.
- */
-function convert(name: string): number | null {
-  const ingredient = ingredients.value[name]
-  const row = rows.value[name]
-
-  if (!ingredient || !row) return null
-  if (!Number.isFinite(row.amount) || row.amount < 0) return null
-
-  const inMl = toMilliliters(row.amount, row.fromUnit, ingredient.densitet)
-  return fromMilliliters(inMl, row.toUnit, ingredient.densitet)
-}
-
-/**
- * Format one row result for display.
- */
-function formattedResult(name: string): string {
-  const value = convert(name)
-  if (value === null) return '-'
-
-  return new Intl.NumberFormat('sv-SE', {
-    maximumFractionDigits: 2,
-  }).format(value)
-}
-
-/**
- * Load ingredient data and initialize table row defaults.
- */
 onMounted(async () => {
   try {
     const response = await fetch('/ingredienser.json')
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`)
-    }
-
+    if (!response.ok) throw new Error(`HTTP ${response.status}`)
     ingredients.value = await response.json()
-
-    for (const name of Object.keys(ingredients.value)) {
-      rows.value[name] = {
-        amount: 1,
-        fromUnit: 'dl',
-        toUnit: 'g',
-      }
-    }
   } catch (err) {
     error.value = err instanceof Error ? err.message : 'Unknown error'
   } finally {
@@ -140,33 +39,12 @@ onMounted(async () => {
         </tr>
       </thead>
       <tbody>
-        <tr v-for="entry in rowEntries" :key="entry.name">
-          <td>{{ entry.name }}</td>
-          <td>
-            <input v-model.number="entry.row.amount" type="number" min="0" step="0.01" />
-          </td>
-          <td>
-            <select v-model="entry.row.fromUnit">
-              <option value="g">gram (g)</option>
-              <option value="ml">milliliter (ml)</option>
-              <option value="dl">deciliter (dl)</option>
-              <option value="tsk">tesked (tsk)</option>
-              <option value="msk">matsked (msk)</option>
-              <option value="cup">US cup</option>
-            </select>
-          </td>
-          <td>
-            <select v-model="entry.row.toUnit">
-              <option value="g">gram (g)</option>
-              <option value="ml">milliliter (ml)</option>
-              <option value="dl">deciliter (dl)</option>
-              <option value="tsk">tesked (tsk)</option>
-              <option value="msk">matsked (msk)</option>
-              <option value="cup">US cup</option>
-            </select>
-          </td>
-          <td><strong>{{ formattedResult(entry.name) }} {{ unitLabel[entry.row.toUnit] }}</strong></td>
-        </tr>
+        <IngredientRow
+          v-for="(ingredient, name) in ingredients"
+          :key="name"
+          :name="String(name)"
+          :densitet="ingredient.densitet"
+        />
       </tbody>
     </table>
   </main>
