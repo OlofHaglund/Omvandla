@@ -13,5 +13,8 @@
   },
   "rapsolja": {
     "densitet": 0.915
+  },
+  "smör": {
+    "densitet": 0.933
   }
 }
